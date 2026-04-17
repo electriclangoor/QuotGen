@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Langoor Media - Quotation Generator</title>
+  <meta name="description" content="Generate beautiful post-production quotations for Langoor Media LLP.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+
+    <!-- EDITOR PANE -->
+    <aside class="editor-pane noprint">
+      <div class="editor-header">
+        <h1>Langoor Media</h1>
+        <p>Quotation Generator</p>
+      </div>
+
+      <form id="quote-form">
+        <!-- Client Details -->
+        <section class="form-section">
+          <h2>Client Information</h2>
+          <div class="input-group-2">
+            <div class="input-field">
+              <label>Client Name</label>
+              <input type="text" id="client-name" placeholder="John Doe" required>
+            </div>
+            <div class="input-field">
+              <label>Company</label>
+              <input type="text" id="client-company" placeholder="Acme Films">
+            </div>
+          </div>
+          <div class="input-field">
+            <label>Email Address</label>
+            <input type="email" id="client-email" placeholder="john@acmefilms.com">
+          </div>
+          <div class="input-field">
+            <label>Client Address</label>
+            <input type="text" id="client-address" placeholder="123 Studio Drive, LA">
+          </div>
+        </section>
+
+        <!-- Project Details -->
+        <section class="form-section">
+          <h2>Project Details</h2>
+          <div class="input-group-2">
+            <div class="input-field">
+              <label>Project Name</label>
+              <input type="text" id="project-name" placeholder="Summer Campaign TVC" required>
+            </div>
+            <div class="input-field">
+              <label>Quotation No.</label>
+              <input type="text" id="quote-no" placeholder="Q-20260401" required>
+            </div>
+          </div>
+          <div class="input-group-2">
+            <div class="input-field">
+              <label>Quote Date</label>
+              <input type="date" id="quote-date" required>
+            </div>
+            <div class="input-field">
+              <label>Valid Until</label>
+              <input type="date" id="quote-valid" required>
+            </div>
+          </div>
+        </section>
+
+        <!-- Line Items -->
+        <section class="form-section">
+          <h2>Services & Items</h2>
+          <div id="items-container">
+            <!-- Items injected by JS -->
+          </div>
+          <button type="button" class="btn btn-secondary w-full" id="add-item-btn">
+            + Add Service
+          </button>
+        </section>
+
+        <!-- Financials -->
+        <section class="form-section final-section">
+          <h2>Taxes & Extras</h2>
+          <div class="input-group-2">
+            <div class="input-field">
+              <label>Tax Name</label>
+              <input type="text" id="tax-name" value="GST (18%)">
+            </div>
+            <div class="input-field">
+              <label>Tax Rate (%)</label>
+              <input type="number" id="tax-rate" value="18" min="0" step="0.1">
+            </div>
+          </div>
+        </section>
+
+      </form>
+
+      <div class="editor-footer">
+        <button type="button" class="btn btn-primary w-full glow" id="print-btn">
+          Print / Download PDF
+        </button>
+      </div>
+    </aside>
+
+    <!-- PREVIEW PANE -->
+    <main class="preview-pane">
+      <div class="quote-document" id="quote-document">
+
+        <!-- Doc Header -->
+        <header class="doc-header" style="flex-direction: column; align-items: stretch;">
+
+          <!-- Company Banner -->
+          <div class="company-banner"
+            style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+            <div class="doc-branding" style="text-align: left;">
+              <h1 class="brand-text" style="font-size: 2.2rem; margin-bottom: 4px;">Langoor Media LLP</h1>
+              <p style="font-weight: 500; font-size: 1.05rem; color: var(--doc-accent); margin-bottom: 4px;">We Design |
+                We Edit | We Color | We Create</p>
+              <p style="color: var(--doc-muted);">langoormedia.com | hitmeup@langoormedia.com | +91 9145 303 690</p>
+            </div>
+            <img src="logo.png" id="doc-logo" alt="Langoor Media Logo" onerror="this.style.display='none'"
+              onload="this.style.display='block'" style="max-height: 90px;">
+          </div>
+
+          <!-- Quotation Meta -->
+          <div class="doc-meta-container"
+            style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-top: 30px;">
+            <h2 class="doc-title"
+              style="margin-bottom: 0; text-align: left; letter-spacing: 0.1em; color: var(--doc-text);">QUOTATION</h2>
+            <div class="doc-meta" style="text-align: right;">
+              <div class="meta-grid">
+                <div class="meta-label">Quote No:</div>
+                <div class="meta-value" id="doc-quote-no">Q-20260401</div>
+                <div class="meta-label">Date:</div>
+                <div class="meta-value" id="doc-date">-</div>
+                <div class="meta-label">Valid Until:</div>
+                <div class="meta-value" id="doc-valid">-</div>
+              </div>
+            </div>
+          </div>
+
+        </header>
+
+        <!-- Doc Info -->
+        <div class="doc-info-section">
+          <div class="doc-to">
+            <h3>Prepared For:</h3>
+            <div id="doc-client-name" class="font-bold">-</div>
+            <div id="doc-client-company">-</div>
+            <div id="doc-client-email">-</div>
+            <div id="doc-client-address">-</div>
+          </div>
+          <div class="doc-project">
+            <h3>Project:</h3>
+            <div id="doc-project-name" class="highlight-text">-</div>
+          </div>
+        </div>
+
+        <!-- Doc Table -->
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th class="col-desc">Description of Service</th>
+              <th class="col-qty">Qty</th>
+              <th class="col-rate">Rate</th>
+              <th class="col-amount">Amount</th>
+            </tr>
+          </thead>
+          <tbody id="doc-items-tbody">
+            <!-- Items rendered here -->
+          </tbody>
+        </table>
+
+        <!-- Doc Totals -->
+        <div class="doc-totals-section">
+          <div class="doc-totals-container">
+            <div class="total-row">
+              <span class="total-label">Subtotal</span>
+              <span class="total-value" id="doc-subtotal">₹0.00</span>
+            </div>
+            <div class="total-row tax-row" id="tax-row">
+              <span class="total-label" id="doc-tax-label">Tax</span>
+              <span class="total-value" id="doc-tax-amount">₹0.00</span>
+            </div>
+            <div class="total-row grand-total">
+              <span class="total-label">Grand Total</span>
+              <span class="total-value" id="doc-total">₹0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Doc Footer -->
+        <footer class="doc-footer">
+          <h4>Terms & Conditions</h4>
+          <ul>
+            <li>25% advance payment is required before starting the work.</li>
+            <li>Balance payment is required within 45 days of invoice date.</li>
+            <li>Revisions: Includes up to three rounds of revisions per deliverable. Major structural changes may
+              incur additional costs.</li>
+            <li>Delivery schedule to be mutually agreed upon before project commencement.</li>
+            <li>Open project files are not included in this quotation and remain the property of Langoor Media LLP.</li>
+          </ul>
+          <div style="display: flex; flex-direction: column; align-items: center; width: 200px; margin-top: 80px;">
+            <img src="sign.png" alt="Signature" onerror="this.style.display='none'" onload="this.style.display='block'"
+              style="max-height: 70px; margin-bottom: 5px;">
+            <div class="signature-line" style="margin-top: 0; width: 100%;">Authorized Signatory</div>
+          </div>
+        </footer>
+
+        <!-- Legal Registration Footer -->
+        <div
+          style="text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px dashed var(--doc-border); font-size: 0.8rem; color: var(--doc-muted); line-height: 1.6;">
+          <div>LLPINACG - 9398 | UDYAM-MH-26-1116946</div>
+          <div>E9/1 - Salunkhe Vihar Society, Salunkhe Vihar Road, Mohammad Wadi, Pune - 411022</div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
