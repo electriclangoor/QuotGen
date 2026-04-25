@@ -522,6 +522,101 @@ body {
 /* ------------------------
    PRINT MEDIA QUERY
 ------------------------ */
+/* ------------------------
+   RESPONSIVE DESIGN (MOBILE)
+------------------------ */
+@media (max-width: 850px) {
+  body {
+    overflow-y: auto;
+    height: auto;
+  }
+
+  .app-tabs {
+    flex-direction: column;
+    height: auto;
+    padding: 16px;
+    gap: 16px;
+  }
+  
+  .tab-buttons {
+    width: 100%;
+    justify-content: center;
+    gap: 12px;
+  }
+  
+  .tab-btn {
+    padding: 8px 12px;
+  }
+
+  .app-main-content {
+    height: auto;
+    overflow-y: visible;
+  }
+  
+  .app-container {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .editor-pane {
+    flex: none;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 2px solid var(--border-color);
+  }
+
+  .editor-form {
+    overflow-y: visible;
+    padding: 16px;
+  }
+  
+  .preview-pane {
+    width: 100%;
+    padding: 16px 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden; /* Hide overflow to prevent scrollbars */
+  }
+  
+  .quote-document {
+    width: 800px;
+    min-width: 800px;
+    margin: 0;
+    /* Scaling is handled by JS for precise cross-browser support */
+  }
+  
+  .input-group-2 {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  
+  .doc-meta-container {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 16px;
+  }
+  
+  .doc-title {
+    text-align: left;
+  }
+  
+  .meta-grid {
+    text-align: left;
+    justify-content: flex-start;
+  }
+  
+  .company-banner {
+    flex-direction: column-reverse;
+    gap: 16px;
+  }
+  
+  .doc-info-section {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
 @media print {
   @page {
     margin: 0;

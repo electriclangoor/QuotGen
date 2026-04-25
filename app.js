@@ -229,4 +229,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // Setup Invoice Generator
   setupGenerator('invoice');
 
+  // --- Dynamic Scaling for Mobile ---
+  const adjustScale = () => {
+    const screenWidth = window.innerWidth;
+    const panes = document.querySelectorAll('.preview-pane');
+    
+    panes.forEach(pane => {
+      const doc = pane.querySelector('.quote-document');
+      if (!doc) return;
+      
+      // Reset styles to calculate intrinsic height properly
+      doc.style.transform = 'none';
+      pane.style.height = 'auto';
+      
+      if (screenWidth <= 850) {
+        // Calculate scale (800px doc width, minus 32px padding for the screen)
+        const scale = Math.min(1, (screenWidth - 32) / 800);
+        
+        doc.style.transformOrigin = 'top center';
+        doc.style.transform = `scale(${scale})`;
+        
+        // After scaling, the visual height changes but the DOM element height remains the same.
+        // We set the wrapper pane height to match the scaled height to remove blank space.
+        const scaledHeight = doc.offsetHeight * scale;
+        pane.style.height = `${scaledHeight + 32}px`; // Add back padding
+      }
+    });
+  };
+
+  // Run on resize and initial load
+  window.addEventListener('resize', adjustScale);
+  
+  // Need a slight delay to ensure all CSS is loaded and DOM is painted
+  setTimeout(adjustScale, 100);
 });
