@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Langoor Media - Quotation Generator</title>
-  <meta name="description" content="Generate beautiful post-production quotations for Langoor Media LLP.">
+  <title>Langoor Media - Business Tools</title>
+  <meta name="description" content="Generate beautiful post-production quotations and invoices for Langoor Media LLP.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -13,217 +13,412 @@
 </head>
 
 <body>
-  <div class="app-container">
+  
+  <!-- TOP NAVIGATION TABS (Visible on screen, hidden on print) -->
+  <nav class="app-tabs noprint">
+    <div class="tab-logo">Langoor Media</div>
+    <div class="tab-buttons">
+      <button class="tab-btn active" data-target="tab-quote">Quotation Generator</button>
+      <button class="tab-btn" data-target="tab-invoice">Invoice Generator</button>
+    </div>
+  </nav>
 
-    <!-- EDITOR PANE -->
-    <aside class="editor-pane noprint">
-      <div class="editor-header">
-        <h1>Langoor Media</h1>
-        <p>Quotation Generator</p>
-      </div>
+  <div class="app-main-content">
 
-      <form id="quote-form">
-        <!-- Client Details -->
-        <section class="form-section">
-          <h2>Client Information</h2>
-          <div class="input-group-2">
-            <div class="input-field">
-              <label>Client Name</label>
-              <input type="text" id="client-name" placeholder="John Doe" required>
-            </div>
-            <div class="input-field">
-              <label>Company</label>
-              <input type="text" id="client-company" placeholder="Acme Films">
-            </div>
-          </div>
-          <div class="input-field">
-            <label>Email Address</label>
-            <input type="email" id="client-email" placeholder="john@acmefilms.com">
-          </div>
-          <div class="input-field">
-            <label>Client Address</label>
-            <input type="text" id="client-address" placeholder="123 Studio Drive, LA">
-          </div>
-        </section>
-
-        <!-- Project Details -->
-        <section class="form-section">
-          <h2>Project Details</h2>
-          <div class="input-group-2">
-            <div class="input-field">
-              <label>Project Name</label>
-              <input type="text" id="project-name" placeholder="Summer Campaign TVC" required>
-            </div>
-            <div class="input-field">
-              <label>Quotation No.</label>
-              <input type="text" id="quote-no" placeholder="Q-20260401" required>
-            </div>
-          </div>
-          <div class="input-group-2">
-            <div class="input-field">
-              <label>Quote Date</label>
-              <input type="date" id="quote-date" required>
-            </div>
-            <div class="input-field">
-              <label>Valid Until</label>
-              <input type="date" id="quote-valid" required>
-            </div>
-          </div>
-        </section>
-
-        <!-- Line Items -->
-        <section class="form-section">
-          <h2>Services & Items</h2>
-          <div id="items-container">
-            <!-- Items injected by JS -->
-          </div>
-          <button type="button" class="btn btn-secondary w-full" id="add-item-btn">
-            + Add Service
-          </button>
-        </section>
-
-        <!-- Financials -->
-        <section class="form-section final-section">
-          <h2>Taxes & Extras</h2>
-          <div class="input-group-2">
-            <div class="input-field">
-              <label>Tax Name</label>
-              <input type="text" id="tax-name" value="GST (18%)">
-            </div>
-            <div class="input-field">
-              <label>Tax Rate (%)</label>
-              <input type="number" id="tax-rate" value="18" min="0" step="0.1">
-            </div>
-          </div>
-        </section>
-
-      </form>
-
-      <div class="editor-footer">
-        <button type="button" class="btn btn-primary w-full glow" id="print-btn">
-          Print / Download PDF
-        </button>
-      </div>
-    </aside>
-
-    <!-- PREVIEW PANE -->
-    <main class="preview-pane">
-      <div class="quote-document" id="quote-document">
-
-        <!-- Doc Header -->
-        <header class="doc-header" style="flex-direction: column; align-items: stretch;">
-
-          <!-- Company Banner -->
-          <div class="company-banner"
-            style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
-            <div class="doc-branding" style="text-align: left;">
-              <h1 class="brand-text" style="font-size: 2.2rem; margin-bottom: 4px;">Langoor Media LLP</h1>
-              <p style="font-weight: 500; font-size: 1.05rem; color: var(--doc-accent); margin-bottom: 4px;">We Design |
-                We Edit | We Color | We Create</p>
-              <p style="color: var(--doc-muted);">langoormedia.com | hitmeup@langoormedia.com | +91 9145 303 690</p>
-            </div>
-            <img src="logo.png" id="doc-logo" alt="Langoor Media Logo" onerror="this.style.display='none'"
-              onload="this.style.display='block'" style="max-height: 90px;">
+    <!-- ==================== QUOTATION TAB ==================== -->
+    <div class="tab-content active" id="tab-quote">
+      <div class="app-container">
+        <!-- EDITOR PANE -->
+        <aside class="editor-pane noprint">
+          <div class="editor-header">
+            <h1>Quotation Details</h1>
+            <p>Fill out the form to generate a quote.</p>
           </div>
 
-          <!-- Quotation Meta -->
-          <div class="doc-meta-container"
-            style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-top: 30px;">
-            <h2 class="doc-title"
-              style="margin-bottom: 0; text-align: left; letter-spacing: 0.1em; color: var(--doc-text);">QUOTATION</h2>
-            <div class="doc-meta" style="text-align: right;">
-              <div class="meta-grid">
-                <div class="meta-label">Quote No:</div>
-                <div class="meta-value" id="doc-quote-no">Q-20260401</div>
-                <div class="meta-label">Date:</div>
-                <div class="meta-value" id="doc-date">-</div>
-                <div class="meta-label">Valid Until:</div>
-                <div class="meta-value" id="doc-valid">-</div>
+          <form id="quote-form" class="editor-form">
+            <!-- Client Details -->
+            <section class="form-section">
+              <h2>Client Information</h2>
+              <div class="input-group-2">
+                <div class="input-field">
+                  <label>Client Name</label>
+                  <input type="text" id="quote-client-name" placeholder="John Doe" required>
+                </div>
+                <div class="input-field">
+                  <label>Company</label>
+                  <input type="text" id="quote-client-company" placeholder="Acme Films">
+                </div>
+              </div>
+              <div class="input-field">
+                <label>Email Address</label>
+                <input type="email" id="quote-client-email" placeholder="john@acmefilms.com">
+              </div>
+              <div class="input-field">
+                <label>Client Address</label>
+                <input type="text" id="quote-client-address" placeholder="123 Studio Drive, LA">
+              </div>
+            </section>
+
+            <!-- Project Details -->
+            <section class="form-section">
+              <h2>Project Details</h2>
+              <div class="input-group-2">
+                <div class="input-field">
+                  <label>Project Name</label>
+                  <input type="text" id="quote-project-name" placeholder="Summer Campaign TVC" required>
+                </div>
+                <div class="input-field">
+                  <label>Quotation No.</label>
+                  <input type="text" id="quote-no" placeholder="Q-20260401" required>
+                </div>
+              </div>
+              <div class="input-group-2">
+                <div class="input-field">
+                  <label>Quote Date</label>
+                  <input type="date" id="quote-date" required>
+                </div>
+                <div class="input-field">
+                  <label>Valid Until</label>
+                  <input type="date" id="quote-valid" required>
+                </div>
+              </div>
+              <div class="input-field">
+                <label>Project Type</label>
+                <input type="text" id="quote-project-type" placeholder="e.g. Video Editing, Branding">
+              </div>
+            </section>
+
+            <!-- Line Items -->
+            <section class="form-section">
+              <h2>Services & Items</h2>
+              <div id="quote-items-container" class="items-container">
+                <!-- Items injected by JS -->
+              </div>
+              <button type="button" class="btn btn-secondary w-full" id="quote-add-item-btn">
+                + Add Service
+              </button>
+            </section>
+
+            <!-- Financials -->
+            <section class="form-section final-section">
+              <h2>Taxes & Extras</h2>
+              <div class="input-group-2">
+                <div class="input-field">
+                  <label>Tax Name</label>
+                  <input type="text" id="quote-tax-name" value="GST (18%)">
+                </div>
+                <div class="input-field">
+                  <label>Tax Rate (%)</label>
+                  <input type="number" id="quote-tax-rate" value="18" min="0" step="0.1">
+                </div>
+              </div>
+            </section>
+          </form>
+
+          <div class="editor-footer">
+            <button type="button" class="btn btn-primary w-full glow" id="quote-print-btn">
+              Print / Download PDF
+            </button>
+          </div>
+        </aside>
+
+        <!-- PREVIEW PANE -->
+        <main class="preview-pane">
+          <div class="quote-document">
+            <header class="doc-header" style="flex-direction: column; align-items: stretch;">
+              <div class="company-banner" style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+                <div class="doc-branding" style="text-align: left;">
+                  <h1 class="brand-text" style="font-size: 2.2rem; margin-bottom: 4px;">Langoor Media LLP</h1>
+                  <p style="font-weight: 500; font-size: 1.05rem; color: var(--doc-accent); margin-bottom: 4px;">We Design | We Edit | We Color | We Create</p>
+                  <p style="color: var(--doc-muted);">langoormedia.com | hitmeup@langoormedia.com | +91 9145 303 690</p>
+                </div>
+                <img src="logo.png" alt="Langoor Media Logo" onerror="this.style.display='none'" onload="this.style.display='block'" style="max-height: 90px;">
+              </div>
+              <div class="doc-meta-container" style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-top: 30px;">
+                <h2 class="doc-title" style="margin-bottom: 0; text-align: left; letter-spacing: 0.1em; color: var(--doc-text);">QUOTATION</h2>
+                <div class="doc-meta" style="text-align: right;">
+                  <div class="meta-grid">
+                    <div class="meta-label">Quote No:</div>
+                    <div class="meta-value" id="doc-quote-no">Q-20260401</div>
+                    <div class="meta-label">Date:</div>
+                    <div class="meta-value" id="doc-quote-date">-</div>
+                    <div class="meta-label">Valid Until:</div>
+                    <div class="meta-value" id="doc-quote-valid">-</div>
+                  </div>
+                </div>
+              </div>
+            </header>
+
+            <div class="doc-info-section">
+              <div class="doc-to">
+                <h3>Prepared For:</h3>
+                <div id="doc-quote-client-name" class="font-bold">-</div>
+                <div id="doc-quote-client-company">-</div>
+                <div id="doc-quote-client-email">-</div>
+                <div id="doc-quote-client-address">-</div>
+              </div>
+              <div class="doc-project">
+                <h3>Project:</h3>
+                <div id="doc-quote-project-name" class="highlight-text">-</div>
               </div>
             </div>
-          </div>
 
-        </header>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th class="col-desc">Description of Service</th>
+                  <th class="col-qty">Qty</th>
+                  <th class="col-rate">Rate</th>
+                  <th class="col-amount">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="doc-quote-items-tbody">
+                <!-- Items rendered here -->
+              </tbody>
+            </table>
 
-        <!-- Doc Info -->
-        <div class="doc-info-section">
-          <div class="doc-to">
-            <h3>Prepared For:</h3>
-            <div id="doc-client-name" class="font-bold">-</div>
-            <div id="doc-client-company">-</div>
-            <div id="doc-client-email">-</div>
-            <div id="doc-client-address">-</div>
-          </div>
-          <div class="doc-project">
-            <h3>Project:</h3>
-            <div id="doc-project-name" class="highlight-text">-</div>
-          </div>
-        </div>
-
-        <!-- Doc Table -->
-        <table class="doc-table">
-          <thead>
-            <tr>
-              <th class="col-desc">Description of Service</th>
-              <th class="col-qty">Qty</th>
-              <th class="col-rate">Rate</th>
-              <th class="col-amount">Amount</th>
-            </tr>
-          </thead>
-          <tbody id="doc-items-tbody">
-            <!-- Items rendered here -->
-          </tbody>
-        </table>
-
-        <!-- Doc Totals -->
-        <div class="doc-totals-section">
-          <div class="doc-totals-container">
-            <div class="total-row">
-              <span class="total-label">Subtotal</span>
-              <span class="total-value" id="doc-subtotal">₹0.00</span>
+            <div class="doc-totals-section">
+              <div class="doc-totals-container">
+                <div class="total-row">
+                  <span class="total-label">Subtotal</span>
+                  <span class="total-value" id="doc-quote-subtotal">₹0.00</span>
+                </div>
+                <div class="total-row tax-row" id="quote-tax-row">
+                  <span class="total-label" id="doc-quote-tax-label">Tax</span>
+                  <span class="total-value" id="doc-quote-tax-amount">₹0.00</span>
+                </div>
+                <div class="total-row grand-total">
+                  <span class="total-label">Grand Total</span>
+                  <span class="total-value" id="doc-quote-total">₹0.00</span>
+                </div>
+              </div>
             </div>
-            <div class="total-row tax-row" id="tax-row">
-              <span class="total-label" id="doc-tax-label">Tax</span>
-              <span class="total-value" id="doc-tax-amount">₹0.00</span>
-            </div>
-            <div class="total-row grand-total">
-              <span class="total-label">Grand Total</span>
-              <span class="total-value" id="doc-total">₹0.00</span>
+
+            <footer class="doc-footer">
+              <h4>Terms & Conditions</h4>
+              <ul>
+                <li>25% advance payment is required before starting the work.</li>
+                <li>Balance payment is required within 45 days of invoice date.</li>
+                <li>Revisions: Includes up to three rounds of revisions per deliverable. Major structural changes may incur additional costs.</li>
+                <li>Delivery schedule to be mutually agreed upon before project commencement.</li>
+                <li>Open project files are not included in this quotation and remain the property of Langoor Media LLP.</li>
+              </ul>
+              <div style="display: flex; flex-direction: column; align-items: center; width: 200px; margin-top: 80px;">
+                <img src="sign.png" alt="Signature" onerror="this.style.display='none'" onload="this.style.display='block'" style="max-height: 70px; margin-bottom: 5px;">
+                <div class="signature-line" style="margin-top: 0; width: 100%;">Authorized Signatory</div>
+              </div>
+            </footer>
+            
+            <div style="text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px dashed var(--doc-border); font-size: 0.8rem; color: var(--doc-muted); line-height: 1.6;">
+              <div>LLPINACG - 9398 | UDYAM-MH-26-1116946</div>
+              <div>E9/1 - Salunkhe Vihar Society, Salunkhe Vihar Road, Mohammad Wadi, Pune - 411022</div>
             </div>
           </div>
-        </div>
-
-        <!-- Doc Footer -->
-        <footer class="doc-footer">
-          <h4>Terms & Conditions</h4>
-          <ul>
-            <li>25% advance payment is required before starting the work.</li>
-            <li>Balance payment is required within 45 days of invoice date.</li>
-            <li>Revisions: Includes up to three rounds of revisions per deliverable. Major structural changes may
-              incur additional costs.</li>
-            <li>Delivery schedule to be mutually agreed upon before project commencement.</li>
-            <li>Open project files are not included in this quotation and remain the property of Langoor Media LLP.</li>
-          </ul>
-          <div style="display: flex; flex-direction: column; align-items: center; width: 200px; margin-top: 80px;">
-            <img src="sign.png" alt="Signature" onerror="this.style.display='none'" onload="this.style.display='block'"
-              style="max-height: 70px; margin-bottom: 5px;">
-            <div class="signature-line" style="margin-top: 0; width: 100%;">Authorized Signatory</div>
-          </div>
-        </footer>
-
-        <!-- Legal Registration Footer -->
-        <div
-          style="text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px dashed var(--doc-border); font-size: 0.8rem; color: var(--doc-muted); line-height: 1.6;">
-          <div>LLPINACG - 9398 | UDYAM-MH-26-1116946</div>
-          <div>E9/1 - Salunkhe Vihar Society, Salunkhe Vihar Road, Mohammad Wadi, Pune - 411022</div>
-        </div>
-
+        </main>
       </div>
-    </main>
+    </div>
 
+    <!-- ==================== INVOICE TAB ==================== -->
+    <div class="tab-content" id="tab-invoice">
+      <div class="app-container">
+        <!-- EDITOR PANE -->
+        <aside class="editor-pane noprint">
+          <div class="editor-header">
+            <h1>Invoice Details</h1>
+            <p>Fill out the form to generate an invoice.</p>
+          </div>
+
+          <form id="invoice-form" class="editor-form">
+            <!-- Client Details -->
+            <section class="form-section">
+              <h2>Client Information</h2>
+              <div class="input-group-2">
+                <div class="input-field">
+                  <label>Client Name</label>
+                  <input type="text" id="invoice-client-name" placeholder="John Doe" required>
+                </div>
+                <div class="input-field">
+                  <label>Company</label>
+                  <input type="text" id="invoice-client-company" placeholder="Acme Films">
+                </div>
+              </div>
+              <div class="input-field">
+                <label>Email Address</label>
+                <input type="email" id="invoice-client-email" placeholder="john@acmefilms.com">
+              </div>
+              <div class="input-field">
+                <label>Client Address</label>
+                <input type="text" id="invoice-client-address" placeholder="123 Studio Drive, LA">
+              </div>
+            </section>
+
+            <!-- Project Details -->
+            <section class="form-section">
+              <h2>Invoice Details</h2>
+              <div class="input-group-2">
+                <div class="input-field">
+                  <label>Project Name</label>
+                  <input type="text" id="invoice-project-name" placeholder="Summer Campaign TVC" required>
+                </div>
+                <div class="input-field">
+                  <label>Invoice No.</label>
+                  <input type="text" id="invoice-no" placeholder="INV-20260401" required>
+                </div>
+              </div>
+              <div class="input-group-2">
+                <div class="input-field">
+                  <label>Invoice Date</label>
+                  <input type="date" id="invoice-date" required>
+                </div>
+                <div class="input-field">
+                  <label>Due Date</label>
+                  <input type="date" id="invoice-valid" required>
+                </div>
+              </div>
+              <div class="input-field">
+                <label>Project Type</label>
+                <input type="text" id="invoice-project-type" placeholder="e.g. Video Editing, Branding">
+              </div>
+            </section>
+
+            <!-- Line Items -->
+            <section class="form-section">
+              <h2>Services & Items</h2>
+              <div id="invoice-items-container" class="items-container">
+                <!-- Items injected by JS -->
+              </div>
+              <button type="button" class="btn btn-secondary w-full" id="invoice-add-item-btn">
+                + Add Service
+              </button>
+            </section>
+
+            <!-- Financials -->
+            <section class="form-section final-section">
+              <h2>Taxes & Extras</h2>
+              <div class="input-group-2">
+                <div class="input-field">
+                  <label>Tax Name</label>
+                  <input type="text" id="invoice-tax-name" value="GST (18%)">
+                </div>
+                <div class="input-field">
+                  <label>Tax Rate (%)</label>
+                  <input type="number" id="invoice-tax-rate" value="18" min="0" step="0.1">
+                </div>
+              </div>
+            </section>
+          </form>
+
+          <div class="editor-footer">
+            <button type="button" class="btn btn-primary w-full glow" id="invoice-print-btn">
+              Print / Download PDF
+            </button>
+          </div>
+        </aside>
+
+        <!-- PREVIEW PANE -->
+        <main class="preview-pane">
+          <div class="quote-document">
+            <header class="doc-header" style="flex-direction: column; align-items: stretch;">
+              <div class="company-banner" style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+                <div class="doc-branding" style="text-align: left;">
+                  <h1 class="brand-text" style="font-size: 2.2rem; margin-bottom: 4px;">Langoor Media LLP</h1>
+                  <p style="font-weight: 500; font-size: 1.05rem; color: var(--doc-accent); margin-bottom: 4px;">We Design | We Edit | We Color | We Create</p>
+                  <p style="color: var(--doc-muted);">langoormedia.com | hitmeup@langoormedia.com | +91 9145 303 690</p>
+                </div>
+                <img src="logo.png" alt="Langoor Media Logo" onerror="this.style.display='none'" onload="this.style.display='block'" style="max-height: 90px;">
+              </div>
+              <div class="doc-meta-container" style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-top: 30px;">
+                <h2 class="doc-title" style="margin-bottom: 0; text-align: left; letter-spacing: 0.1em; color: var(--doc-text);">INVOICE</h2>
+                <div class="doc-meta" style="text-align: right;">
+                  <div class="meta-grid">
+                    <div class="meta-label">Invoice No:</div>
+                    <div class="meta-value" id="doc-invoice-no">INV-20260401</div>
+                    <div class="meta-label">Date:</div>
+                    <div class="meta-value" id="doc-invoice-date">-</div>
+                    <div class="meta-label">Due Date:</div>
+                    <div class="meta-value" id="doc-invoice-valid">-</div>
+                  </div>
+                </div>
+              </div>
+            </header>
+
+            <div class="doc-info-section">
+              <div class="doc-to">
+                <h3>Billed To:</h3>
+                <div id="doc-invoice-client-name" class="font-bold">-</div>
+                <div id="doc-invoice-client-company">-</div>
+                <div id="doc-invoice-client-email">-</div>
+                <div id="doc-invoice-client-address">-</div>
+              </div>
+              <div class="doc-project">
+                <h3>Project:</h3>
+                <div id="doc-invoice-project-name" class="highlight-text">-</div>
+              </div>
+            </div>
+
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th class="col-desc">Description of Service</th>
+                  <th class="col-qty">Qty</th>
+                  <th class="col-rate">Rate</th>
+                  <th class="col-amount">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="doc-invoice-items-tbody">
+                <!-- Items rendered here -->
+              </tbody>
+            </table>
+
+            <div class="doc-totals-section">
+              <div class="doc-totals-container">
+                <div class="total-row">
+                  <span class="total-label">Subtotal</span>
+                  <span class="total-value" id="doc-invoice-subtotal">₹0.00</span>
+                </div>
+                <div class="total-row tax-row" id="invoice-tax-row">
+                  <span class="total-label" id="doc-invoice-tax-label">Tax</span>
+                  <span class="total-value" id="doc-invoice-tax-amount">₹0.00</span>
+                </div>
+                <div class="total-row grand-total">
+                  <span class="total-label">Total Due</span>
+                  <span class="total-value" id="doc-invoice-total">₹0.00</span>
+                </div>
+              </div>
+            </div>
+
+            <footer class="doc-footer">
+              <h4>Payment Details & Terms</h4>
+              <ul>
+                <li>25% advance payment is required before starting the work.</li>
+                <li>Balance payment is required within 45 days of invoice date.</li>
+                <li>Revisions: Includes up to three rounds of revisions per deliverable. Major structural changes may incur additional costs.</li>
+
+                <li>Open project files are not included in this invoice and remain the property of Langoor Media LLP.</li>
+                <li>Late payments may incur an additional 1.5% interest per month.</li>
+                <li><strong>Bank Details:</strong><br>
+                  Bank Name: HDFC Bank<br>
+                  Beneficiary Name: LANGOOR MEDIA LLP<br>
+                  A/c No: 50200096850029<br>
+                  IFSC: HDFC0002454
+                </li>
+              </ul>
+              <div style="display: flex; flex-direction: column; align-items: center; width: 200px; margin-top: 80px;">
+                <img src="sign.png" alt="Signature" onerror="this.style.display='none'" onload="this.style.display='block'" style="max-height: 70px; margin-bottom: 5px;">
+                <div class="signature-line" style="margin-top: 0; width: 100%;">Authorized Signatory</div>
+              </div>
+            </footer>
+            
+            <div style="text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px dashed var(--doc-border); font-size: 0.8rem; color: var(--doc-muted); line-height: 1.6;">
+              <div>LLPINACG - 9398 | UDYAM-MH-26-1116946</div>
+              <div>E9/1 - Salunkhe Vihar Society, Salunkhe Vihar Road, Mohammad Wadi, Pune - 411022</div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
   </div>
 
   <script src="app.js"></script>
 </body>
-
 </html>
